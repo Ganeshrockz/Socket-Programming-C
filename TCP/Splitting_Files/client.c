@@ -46,6 +46,7 @@ int main()
             break;
         filecounter++;
         sprintf(opname, "file_part%d", filecounter);
+        //conver the above line, second part from file_part%d to file_part%d.txt when working on windows
         ptr_writefile = fopen(opname, "w");
         fprintf(ptr_writefile, "%s\n", line);
         fclose(ptr_writefile);
