@@ -13,10 +13,13 @@
 int main()
 {
     int client;
+    FILE *ptr_writefile;
+    char line[128], opname[15];
+    int filecounter = 0;
     int conn, lis;
     struct sockaddr_in clientSocket;
     struct request clientRequest;
-    
+
     printf("Enter the File Name: ");
     scanf("%s", clientRequest.file_name);
     printf("File Name: %s\n", clientRequest.file_name);
@@ -25,7 +28,7 @@ int main()
     scanf("%d", &clientRequest.buffer);
     printf("Buffer Size: %d\n", clientRequest.buffer);
     client = socket(AF_INET, SOCK_STREAM, 0);
-    
+
     bzero((struct sockaddr*) &clientSocket, sizeof(clientSocket));
 
     clientSocket.sin_addr.s_addr = htons(INADDR_ANY);
@@ -36,8 +39,20 @@ int main()
 
     write(client, (struct request*) &clientRequest, sizeof(clientRequest));
     
+    while(read(client,line,sizeof(line)))
+    {
+        //read(client, line, sizeof(line));
+        if(strcmp(line, "bye") == 0)
+            break;
+        filecounter++;
+        sprintf(opname, "file_part%d", filecounter);
+        ptr_writefile = fopen(opname, "w");
+        fprintf(ptr_writefile, "%s\n", line);
+        fclose(ptr_writefile);
+    }
     close(client);
+    fclose(ptr_writefile);
+
     return 0;
 
 }
-

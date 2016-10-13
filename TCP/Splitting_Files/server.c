@@ -13,6 +13,8 @@
 int main()
 {
     int client, server;
+    FILE *ptr_readfile;
+    char line[128];
     int bin, lis, acc;
     struct sockaddr_in clientSocket, serverSocket;
     struct request clientRequest;
@@ -29,18 +31,26 @@ int main()
     bin = bind(server, (struct sockaddr*) &serverSocket, sizeof(serverSocket));
 
     lis = listen(server,10);
-    
+
     clientLength = sizeof(clientSocket);
 
     client = accept(server, (struct sockaddr*) &clientSocket, &clientLength);
 
     read(client, (struct request*) &clientRequest, sizeof(clientRequest));
     fflush(stdout);
+    ptr_readfile = fopen(clientRequest.file_name, "r");
     printf("File Name: %s\n", clientRequest.file_name);
     printf("Buffer Size: %d\n", clientRequest.buffer);
+    while(fgets(line, clientRequest.buffer, ptr_readfile))
+    {
+        write(client, line, sizeof(line));
+    }
+    strcpy(line, "bye");
+    write(client, line, sizeof(line));
 
     close(client);
     close(server);
+    fclose(ptr_readfile);
+
     return 0;
 }
-
