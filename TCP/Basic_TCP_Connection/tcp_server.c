@@ -63,9 +63,11 @@ int main()
         
         printf("Client : %s\n", buffer);
         
+        //if(!strcmp(buffer, "bye"))
+          //  break;
         printf("Server Message: ");
-        fgets(buffer, 1024, stdin);
-        
+        //fgets(buffer, 1024, stdin);
+        scanf("%s", buffer);
         write(client, buffer, sizeof(buffer));
 
     }while( (strcmp(buffer,"bye") != 0) );

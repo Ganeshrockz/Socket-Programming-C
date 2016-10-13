@@ -35,9 +35,12 @@ int main()
     do
     {
         printf("Enter the client Message: ");
-        fgets(buffer, 1024, stdin);
-        
+        //fgets(buffer, 1024, stdin);
+        scanf("%s", buffer);
+
         write(client, buffer, sizeof(buffer));
+        //if(!strcmp(buffer,"bye"))
+          //  break;
         listen(client,1);
 
         read(client, buffer, sizeof(buffer));
